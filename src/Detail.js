@@ -1,7 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import './Detail.scss';
+import { Nav } from 'react-bootstrap';
+import { StockContext } from './App.js';
+import { CSSTransition } from 'react-transition-group';
 
 let Box = styled.div`
 	padding-top: 30px;
@@ -11,9 +14,17 @@ let Title = styled.h4`
 	color: ${(props) => props.color};
 `;
 
+function Info(props) {
+	return <p>재고: {props.stock}</p>;
+}
+
 export default function Detail(props) {
 	let [open, setOpen] = useState(true);
+	let [tab, setTab] = useState(0);
+	let [swit, setSwit] = useState(false);
+	let stock = useContext(StockContext);
 	useEffect(() => {
+		console.log(stock);
 		let Timer = setTimeout(() => {
 			setOpen(false);
 		}, 2000);
@@ -56,6 +67,7 @@ export default function Detail(props) {
 					<h4 className='pt-5'>{shoe.title}</h4>
 					<p>{shoe.content}</p>
 					<p>{shoe.price}원</p>
+					<Info stock={props.stock}></Info>
 					<button className='btn btn-danger'>주문하기</button>
 					<button
 						className='btn btn-danger'
@@ -67,6 +79,54 @@ export default function Detail(props) {
 					</button>
 				</div>
 			</div>
+
+			<Nav className='mt-5' variant='tabs' defaultActiveKey='link-0'>
+				<Nav.Item>
+					<Nav.Link
+						eventKey='link-0'
+						onClick={() => {
+							setSwit(false);
+							setTab(0);
+						}}
+					>
+						Active
+					</Nav.Link>
+				</Nav.Item>
+				<Nav.Item>
+					<Nav.Link
+						eventKey='link-1'
+						onClick={() => {
+							setSwit(false);
+							setTab(1);
+						}}
+					>
+						Option 1
+					</Nav.Link>
+				</Nav.Item>
+				<Nav.Item>
+					<Nav.Link
+						eventKey='link-2'
+						onClick={() => {
+							setSwit(false);
+							setTab(2);
+						}}
+					>
+						Option 2
+					</Nav.Link>
+				</Nav.Item>
+			</Nav>
+			<CSSTransition in={swit} classNames='wow' timeout={500}>
+				<TabContent tab={tab} setSwit={setSwit} />
+			</CSSTransition>
 		</div>
 	);
+}
+
+function TabContent({ tab, setSwit }) {
+	useEffect(() => {
+		setSwit(true);
+	});
+	if (tab === 0) return <div>0번째 내용입니다</div>;
+	else if (tab === 1) return <div>1번째 내용입니다</div>;
+	else if (tab === 2) return <div>2번째 내용입니다</div>;
 }
