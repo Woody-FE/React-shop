@@ -2,7 +2,7 @@ import React from 'react';
 import { Table } from 'react-bootstrap';
 import { connect } from 'react-redux';
 
-function Cart({ name }) {
+function Cart({ state }) {
 	return (
 		<div>
 			<Table responsive>
@@ -15,19 +15,23 @@ function Cart({ name }) {
 					</tr>
 				</thead>
 				<tbody>
-					<tr>
-						<td>1</td>
-						<td>{name}</td>
-						<td>Table cell</td>
-						<td>Table cell</td>
-					</tr>
+					{state.map((stock, i) => {
+						return (
+							<tr key={i}>
+								<td>{stock.id + 1}</td>
+								<td>{stock.name}</td>
+								<td>{stock.count}개</td>
+								<td>Table cell</td>
+							</tr>
+						);
+					})}
 				</tbody>
 			</Table>
 		</div>
 	);
 }
 const mapStateToProps = (state) => ({
-	name: state[0].name,
+	state: state,
 });
 
 export default connect(mapStateToProps)(Cart);

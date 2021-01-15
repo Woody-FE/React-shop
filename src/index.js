@@ -9,7 +9,10 @@ import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 
 let store = createStore(() => {
-	return [{ id: 0, name: '대한민국', count: 2 }];
+	return [
+		{ id: 0, name: '대한민국', count: 2 },
+		{ id: 1, name: '신발2', count: 4 },
+	];
 });
 
 ReactDOM.render(
